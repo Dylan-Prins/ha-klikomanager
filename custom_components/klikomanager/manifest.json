@@ -1,0 +1,15 @@
+{
+  "domain": "klikomanager",
+  "name": "Klikomanager",
+  "version": "0.0.1",
+  "documentation": "https://github.com/dylan-prins/ha-klikomanager",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": ["@dylan-prins"],
+  "iot_class": "cloud_polling",
+  "integration_type": "hub",
+  "config_flow": true,
+  "loggers": ["custom_components.klikomanager"]
+}
+
+

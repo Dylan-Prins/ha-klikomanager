@@ -1,0 +1,4 @@
+# Op dit moment zijn er geen extra Python-dependencies nodig voor deze
+# Home Assistant custom component.
+
+
