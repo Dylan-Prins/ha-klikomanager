@@ -1,7 +1,6 @@
 {
   "domain": "klikomanager",
   "name": "Klikomanager",
-  "version": "0.0.1",
   "documentation": "https://github.com/dylan-prins/ha-klikomanager",
   "requirements": [],
   "dependencies": [],
