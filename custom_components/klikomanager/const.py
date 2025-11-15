@@ -4,11 +4,6 @@ from __future__ import annotations
 
 DOMAIN = "klikomanager"
 
-# Oorspronkelijke adresvelden (mogelijk later weer nodig)
-CONF_POSTCODE = "postcode"
-CONF_HOUSE_NUMBER = "house_number"
-CONF_HOUSE_NUMBER_SUFFIX = "house_number_suffix"
-
 # Loginvelden voor Klikomanager
 CONF_CARD_NUMBER = "card_number"
 CONF_PASSWORD = "password"

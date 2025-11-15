@@ -9,11 +9,14 @@ Deze integratie zet de ophaaldagen van je afvalkalender in een Home Assistant-ag
   - Voorbeeld pad: `/config/custom_components/klikomanager`
 - **Stap 2**: Herstart Home Assistant.
 - **Stap 3**: Ga in Home Assistant naar **Instellingen → Apparaten & Diensten → Integraties → + Integratie toevoegen**.
-- **Stap 4**: Zoek naar **Klikomanager** en volg de stappen in de UI (postcode + huisnummer invullen).
+- **Stap 4**: Zoek naar **Klikomanager** en volg de stappen in de UI (kaartnummer + wachtwoord invullen).
 
-> Let op: de eerste versie gebruikt nog **dummy-data**. De echte koppeling met klikomanager.com wordt later toegevoegd.
+> Let op: de integratie logt in bij klikomanager.com met jouw kaartnummer + wachtwoord en haalt daar de afvalkalender op.
 
 ## Ontwikkel-notities
 
 - De integratie maakt een **calendar entity** aan met de naam “Klikomanager Afvalkalender”.
-- De data wordt opgehaald via een `DataUpdateCoordinator` in `__init__.py` (nu nog met een voorbeeld-event).
+- De data wordt opgehaald via een `DataUpdateCoordinator` in `__init__.py` die:
+  - inlogt met kaartnummer + wachtwoord,
+  - de afvalkalender ophaalt via de Klikomanager API,
+  - en deze omzet naar Home Assistant kalender-events.
