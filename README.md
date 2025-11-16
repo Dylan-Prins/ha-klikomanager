@@ -1,22 +1,31 @@
 # ha-klikomanager
 
-Home Assistant custom component voor [Klikomanager](https://klikomanager.com).  
-Deze integratie zet de ophaaldagen van je afvalkalender in een Home Assistant-agenda.
+Home Assistant custom component for [Klikomanager](https://klikomanager.com).  
+This integration exposes the Dutch Klikomanager household waste collection schedule as a Home Assistant calendar and can optionally sync pickups into an existing calendar (for example an iCloud/CalDAV calendar).
 
-## Installatie (als custom component)
+## Installation (as custom component)
 
-- **Stap 1**: Kopieer de map `custom_components/klikomanager` uit deze repository naar de `custom_components` map van je Home Assistant-installatie.
-  - Voorbeeld pad: `/config/custom_components/klikomanager`
-- **Stap 2**: Herstart Home Assistant.
-- **Stap 3**: Ga in Home Assistant naar **Instellingen → Apparaten & Diensten → Integraties → + Integratie toevoegen**.
-- **Stap 4**: Zoek naar **Klikomanager** en volg de stappen in de UI (kaartnummer + wachtwoord invullen).
+- **Step 1**: Install the integration via HACS (Custom repository) or copy the `custom_components/klikomanager` folder from this repository into the `custom_components` folder of your Home Assistant installation.  
+  - Example path: `/config/custom_components/klikomanager`
+- **Step 2**: Restart Home Assistant.
+- **Step 3**: In Home Assistant go to **Settings → Devices & Services → Integrations → Add integration**.
+- **Step 4**: Search for **Klikomanager** and follow the UI steps:
+  - enter your Klikomanager **card number** and **password**;
+  - optionally select a **target calendar** (e.g. `calendar.afval_kalender`) where waste pickup events will be created.
 
-> Let op: de integratie logt in bij klikomanager.com met jouw kaartnummer + wachtwoord en haalt daar de afvalkalender op.
+> Note: Klikomanager is a Dutch container / household waste management system.  
+> This integration logs in to klikomanager.com with your card number + password and retrieves the waste collection calendar from their API.
 
-## Ontwikkel-notities
+## Development notes
 
-- De integratie maakt een **calendar entity** aan met de naam “Klikomanager Afvalkalender”.
-- De data wordt opgehaald via een `DataUpdateCoordinator` in `__init__.py` die:
-  - inlogt met kaartnummer + wachtwoord,
-  - de afvalkalender ophaalt via de Klikomanager API,
-  - en deze omzet naar Home Assistant kalender-events.
+- The integration creates a **calendar entity** named “Klikomanager Afvalkalender”.
+- Data is fetched via a `DataUpdateCoordinator` in `__init__.py` that:
+  - logs in with card number + password,
+  - retrieves the waste calendar from the Klikomanager API,
+  - and exposes it as Home Assistant calendar events.
+- The coordinator refreshes **once per day**.
+- When a target calendar is configured:
+  - upcoming Klikomanager pickup dates (up to 60 days ahead) are created as events in that calendar via `calendar.create_event`;
+  - for each combination of **date + fraction** only a single event is created (keys are stored in the config entry options to avoid duplicates).
+
+

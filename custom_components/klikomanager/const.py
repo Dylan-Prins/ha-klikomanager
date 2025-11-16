@@ -15,6 +15,13 @@ CONF_APP = "app"
 # We slaan de token niet persistent op omdat deze korte tijd geldig is.
 CONF_TOKEN = "token"
 
+# Optionele target kalender-entity waar we events in kunnen wegschrijven
+CONF_TARGET_CALENDAR = "target_calendar"
+
+# Persistente set van gesynchroniseerde events (datum + fractie) om dubbele
+# creaties over HA-herstarts heen te voorkomen.
+CONF_SYNCED_EVENTS = "synced_events"
+
 DEFAULT_NAME = "Klikomanager Afvalkalender"
 
 # Standaardwaarden afgeleid uit de Tempfile (gemeente Uithoorn)

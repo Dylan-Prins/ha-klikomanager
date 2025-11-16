@@ -13,6 +13,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN, DEFAULT_NAME
 from . import KlikomanagerDataUpdateCoordinator
@@ -62,6 +63,7 @@ class KlikomanagerCalendarEntity(CoordinatorEntity[KlikomanagerDataUpdateCoordin
 
     async def async_get_events(
         self,
+        hass: HomeAssistant,
         start_date: datetime,
         end_date: datetime,
     ) -> list[CalendarEvent]:
@@ -71,16 +73,16 @@ class KlikomanagerCalendarEntity(CoordinatorEntity[KlikomanagerDataUpdateCoordin
         """
         events: list[CalendarEvent] = []
 
-        # Zorg dat we met naive datums werken voor vergelijking
-        start_date_naive = start_date.replace(tzinfo=None)
-        end_date_naive = end_date.replace(tzinfo=None)
+        # Converteer naar UTC met timezone, zoals Home Assistant verwacht
+        start_date_utc = dt_util.as_utc(start_date)
+        end_date_utc = dt_util.as_utc(end_date)
 
         for item in self.coordinator.data or []:
-            start: datetime = item["start"]
-            end: datetime = item["end"]
+            start: datetime = dt_util.as_utc(item["start"])
+            end: datetime = dt_util.as_utc(item["end"])
 
             # Filter op de gevraagde periode
-            if end < start_date_naive or start > end_date_naive:
+            if end < start_date_utc or start > end_date_utc:
                 continue
 
             events.append(
@@ -100,12 +102,12 @@ class KlikomanagerCalendarEntity(CoordinatorEntity[KlikomanagerDataUpdateCoordin
         if not self.coordinator.data:
             return None
 
-        now = datetime.utcnow()
+        now = dt_util.utcnow()
         next_event: CalendarEvent | None = None
 
         for item in self.coordinator.data:
-            start: datetime = item["start"]
-            end: datetime = item["end"]
+            start: datetime = dt_util.as_utc(item["start"])
+            end: datetime = dt_util.as_utc(item["end"])
 
             # Alleen toekomstige of lopende events meenemen
             if end < now:
